@@ -1,25 +1,31 @@
-stringRepeat = {
-  input: "",
-  get inputArray() {
-    return this.buildInputArray(this.input);
-  },
-  output: "",
-  submit() {
-    debugger;
-    this.input = document.getElementById("input").value;
-    this.output = this.sort(this.inputArray);
-    console.log(this.output);
-    document.getElementById("output").textContent = this.output;
-  },
-  sort(inputArray) {
-    debugger;
+function start() {
+  let input = "";
+  let output = "";
+  function inputArray() {
+    return buildInputArray(input);
+  }
+
+  submit();
+  function submit() {
+    input = document.getElementById("input").value;
+    output = sort(inputArray());
+    console.log(output);
+
+    var formattedData = JSON.stringify(output, null, "\t");
+    $("#output").text(formattedData);
+
+    // document.getElementById("output").textContent = JSON.stringify(output);
+  }
+  function sort(inputArray) {
+    let s = new Date();
     let ret = [];
     let match = true;
     let obj = {};
     for (let i = 1; match; i++) {
+      console.log(i);
       let before = ret.length;
-      let phrasesOfiLength = this.getPhrases(i, inputArray);
-      let matches = this.comparePhrases(phrasesOfiLength);
+      let phrasesOfiLength = getPhrases(i, inputArray);
+      let matches = comparePhrases(phrasesOfiLength);
 
       // add matches of length i to final
       for (let i = 0; i < matches.length; i++) {
@@ -42,11 +48,13 @@ stringRepeat = {
         match = false;
       }
     }
-    console.log(obj);
-    let finalResults = this.cleanUpResults(ret);
-    return finalResults;
-  },
-  getPhrases(n, array) {
+
+    let finalResults = cleanUpResults(ret);
+    let e = new Date();
+    console.log(e, s, e - s);
+    return obj;
+  }
+  function getPhrases(n, array) {
     // returns all sets of words with n words
     let ret = [];
     for (let i = 0; i < array.length; i++) {
@@ -64,8 +72,8 @@ stringRepeat = {
       }
     }
     return ret;
-  },
-  comparePhrases(array) {
+  }
+  function comparePhrases(array) {
     // returns array of phrases that match (of certain length)
     let ret = [];
     for (let i = 0; i < array.length; i++) {
@@ -74,16 +82,16 @@ stringRepeat = {
       }
     }
     return ret;
-  },
-  contains(array, element, index) {
+  }
+  function contains(array, element, index) {
     // does array contain element after index
     for (let i = index + 1; i < array.length; i++) {
       if (array[i] === element) {
         return true;
       }
     }
-  },
-  buildInputArray(input) {
+  }
+  function buildInputArray(input) {
     input = input.toUpperCase();
     input = input.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()"\[\]]/g, "");
     input = input.replace(/[\n]/g, " ");
@@ -91,29 +99,28 @@ stringRepeat = {
     input = input.split(" ");
     input = input.filter(e => e);
     return input;
-  },
+  }
 
-  getCounts(array) {
+  function getCounts(array) {
     var counts = {};
     array.forEach(x => {
       counts[x] = (counts[x] || 0) + 1;
     });
     return counts;
-  },
+  }
 
-  cleanUpResults(array) {
-    let uniques = this.getUnique(array);
+  function cleanUpResults(array) {
+    let uniques = getUnique(array);
     uniques.sort(function(a, b) {
       return a.length - b.length;
     });
-    let final = this.removePartials(uniques);
+    let final = removePartials(uniques);
     final.sort(function(a, b) {
       return b.length - a.length;
     });
     return final;
-  },
-
-  removePartials(array) {
+  }
+  function removePartials(array) {
     let ret = [];
     for (let i = 0; i < array.length; i++) {
       let include = true;
@@ -128,9 +135,9 @@ stringRepeat = {
       }
     }
     return ret;
-  },
+  }
 
-  getUnique(array) {
+  function getUnique(array) {
     var uniqueArray = [];
     for (i = 0; i < array.length; i++) {
       if (uniqueArray.indexOf(array[i]) === -1) {
@@ -139,4 +146,4 @@ stringRepeat = {
     }
     return uniqueArray;
   }
-};
+}
