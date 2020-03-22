@@ -75,12 +75,11 @@ function start() {
   }
   function comparePhrases(array, prevIs) {
     // returns array of phrases that match (of certain length)
-    console.time("comparePhrases" + array.length.toString());
+    let l = array.length;
+    console.time("comparePhrases" + l.toString());
     let ret = [];
     let is = [];
-    debugger;
     if (prevIs.length === 0) {
-      debugger;
       for (let i = 0; i < array.length; i++) {
         if (contains(array, array[i], i)) {
           ret.push(array[i]);
@@ -100,8 +99,14 @@ function start() {
         }
       });
     }
+
     ret.push(is);
-    console.timeEnd("comparePhrases" + array.length.toString());
+    console.time("filter");
+    array = array.filter(e => {
+      is.includes(array.indexOf(e));
+    });
+    console.timeEnd("filter");
+    console.timeEnd("comparePhrases" + l.toString());
     return ret;
   }
   function contains(array, element, index) {
