@@ -87,8 +87,10 @@ function start() {
   function contains(array, element, index) {
     // does array contain element after index
     for (let i = index + 1; i < array.length; i++) {
-      if (array[i] === element) {
-        return true;
+      if (array[i].length === element.length) {
+        if (array[i] === element) {
+          return true;
+        }
       }
     }
   }
