@@ -1,4 +1,6 @@
-Enter a string, returns repeated words/phrases with counts
+Goal:
+Count instances of all repeated words/phrases in a string.
+
 
 Tested with text of Little Women (https://www.gutenberg.org/files/514/514-h/514-h.htm)
 185,875 words,
