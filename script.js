@@ -19,14 +19,15 @@ function start() {
   }
   function sort(inputArray) {
     let ret = [];
+    let prevIs = [];
     let match = true;
     let obj = {};
     for (let i = 1; match; i++) {
       console.log(i);
       let before = ret.length;
       let phrasesOfiLength = getPhrases(i, inputArray);
-      let matches = comparePhrases(phrasesOfiLength);
-
+      let matches = comparePhrases(phrasesOfiLength, prevIs);
+      prevIs = matches.pop();
       // add matches of length i to final
       for (let i = 0; i < matches.length; i++) {
         ret.push(matches[i]);
@@ -72,15 +73,34 @@ function start() {
     console.timeEnd("getPhrases" + n.toString());
     return ret;
   }
-  function comparePhrases(array) {
+  function comparePhrases(array, prevIs) {
     // returns array of phrases that match (of certain length)
     console.time("comparePhrases" + array.length.toString());
     let ret = [];
-    for (let i = 0; i < array.length; i++) {
-      if (contains(array, array[i], i)) {
-        ret.push(array[i]);
+    let is = [];
+    debugger;
+    if (prevIs.length === 0) {
+      debugger;
+      for (let i = 0; i < array.length; i++) {
+        if (contains(array, array[i], i)) {
+          ret.push(array[i]);
+          is.push(i);
+        }
       }
+    } else {
+      prevIs.forEach(e => {
+        let match = true;
+        for (let i = e; match; i++) {
+          if (contains(array, array[i], i)) {
+            ret.push(array[i]);
+            is.push(i);
+          } else {
+            match = false;
+          }
+        }
+      });
     }
+    ret.push(is);
     console.timeEnd("comparePhrases" + array.length.toString());
     return ret;
   }
